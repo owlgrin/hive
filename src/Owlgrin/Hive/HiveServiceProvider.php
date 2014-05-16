@@ -28,7 +28,7 @@ class HiveServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		
 	}
 
 	/**
