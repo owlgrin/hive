@@ -18,7 +18,7 @@ You will need to require it in your `composer.json` file.
 
 And then, you will need to add the following service providers in your `app.php`.
 
-```
+```php
 'Dingo\Api\ApiServiceProvider',
 'LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider',
 'Owlgrin\Hive\HiveServiceProvider',
@@ -32,7 +32,7 @@ Hive comes with a custom validator with some extended features, which you can us
 
 You will need to resolve it when the Validator is required. To do so, you can add the following code in any file that is autoloaded (eg. in `global.php`).
 
-```
+```php
 Validator::resolver(function($translator, $data, $rules, $messages)
 {
     return new Owlgrin\Hive\Validation\Validator($translator, $data, $rules, $messages);
@@ -43,7 +43,7 @@ Validator::resolver(function($translator, $data, $rules, $messages)
 
 You will need to create a file, say `UserValidator.php`, which extends `Owlgrin\Hive\Validation\Runner`. Then, you can create various properties that hold the rules for various situations.
 
-```
+```php
 <?php
 
 use Owlgrin\Hive\Validation\Runner;
@@ -59,7 +59,7 @@ class UserValidator extends Runner {
 
 Once that done, you can pass the file as dependency in your controller/repository and then validate the data like so:
 
-```
+```php
 public function store()
 {
 	$data = Input::all();
@@ -84,7 +84,7 @@ Using, `call_method` rule, you can call a method on another class, which handles
 
 **Usage:**
 
-```
+```php
 protected static $creating = [
 	'invoice_items' => 'array|min:1|call_method:Path\To\StockValidator@isEnoughStockInInventory'
 ];
@@ -92,7 +92,7 @@ protected static $creating = [
 
 You can specify the error messages for this rule in your language files. Add the following section in your `validation.php` at the end.
 
-```
+```php
 'methods' => array(
     'Path\To\StockValidator@isEnoughStockInInventory' => 'The :attribute does not have enough stock.'
 ),
@@ -106,7 +106,7 @@ For instance, you want to validate that the marks of student in each subject sho
 
 The data might look like this:
 
-```
+```php
 $student = [
 	'name' => 'John Doe',
 	'roll_number' => 1337,
@@ -119,7 +119,7 @@ $student = [
 
 Now, we may have a student validator that will validate if the student data but in case we need to validate that each element in the `marks` array should pass certain rules, we can create a class `StudentMarksValidator`,
 
-```
+```php
 <?php
 
 use Owlgrin\Hive\Validation\Runner;
@@ -135,7 +135,7 @@ class StudentMarksValidator extends Runner {
 
 And in `StudentValidator`, we can add the rules like so:
 
-```
+```php
 <?php
 
 use Owlgrin\Hive\Validation\Runner;
@@ -158,7 +158,7 @@ We handle everything that is required to keep track of the position of the eleme
 
 The first part in the error message is called the specifier and the format can be controlled using the language files. To override the default format, create language file called `validation.php` in `app/lang/packages/{locale}/hive` with the following:
 
-```
+```php
 <?php
 
 return [
@@ -190,7 +190,7 @@ And then you can create responses such easily:
 
 You even get the following methods to send back error messages, with proper HTTP status, a custom code and a custom type.
 
-```
+```php
 $this->respondBadRequest();
 $this->respondUnauthorized();
 $this->respondForbidden();
@@ -203,7 +203,7 @@ Each of these method accepts two optional parameters: `$message` and `$code`, wh
 
 The errors are generated of the following structure:
 
-```
+```js
 {
 	error: {
 		code: 400,
@@ -221,7 +221,7 @@ Hive comes with custom exceptions (only one as of now), to make them easier to h
 
 You can use it like following:
 
-```
+```php
 try
 {
 	if($this->validator->when('creating')->isInvalid($data))
