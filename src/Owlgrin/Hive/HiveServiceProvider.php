@@ -19,6 +19,8 @@ class HiveServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('owlgrin/hive');
+
+		require __DIR__ . '/helpers.php';
 	}
 
 	/**
