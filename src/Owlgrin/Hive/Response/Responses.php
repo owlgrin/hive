@@ -133,11 +133,25 @@ trait Responses {
 
 	protected function respondError($message = null, $code = null, $type = null)
 	{
+		// If no message was passed, we will default it to the bad request message
+		if(is_null($message)) $message = static::$MSG_BAD_REQUEST;
+
+		// If the message is found in user's language file
+		if(Lang::has($message))
+		{
+			$message = Lang::get($message);
+		}
+		// If not found in user's language file, we will default it to ours
+		else if(Lang::has("hive::$message"))
+		{
+			$message = Lang::get("hive::$message");
+		}
+
 		return $this->respondArray([
 			'error' => [
 				'code'    => $code ?: static::$CODE_BAD_REQUEST,
 				'type'    => $type ?: static::$TYPE_BAD_REQUEST,
-				'message' => Lang::get('hive::' . $message ?: static::$MSG_BAD_REQUEST)
+				'message' => $message
 			]
 		]);
 	}
