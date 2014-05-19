@@ -22,9 +22,6 @@ class Validator extends IlluminateValidator {
 	{
 		list($class, $when) = explode('@', $parameters[0]);
 
-		// Assuming each of them is valid in the beginning
-		$isEachValid = true;
-
 		// Calling the required validator on each of the item
 		// in the array.
 		foreach($value as $index => $item)
@@ -35,13 +32,12 @@ class Validator extends IlluminateValidator {
 			{
 				// Merging with existing errors
 				$this->addCallEachErrors($attribute, $index, $validator->getErrors());
-
-				// Our assumption was wrong. Fixing it here
-				$isEachValid = false;
 			}
 		}
 
-		return $isEachValid;
+		// Always returning true, because the invalid items in the array has already
+		// trigerred the errors to be added in the errors
+		return true;
 	}
 
 	/**
