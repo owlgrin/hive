@@ -178,6 +178,82 @@ return [
 ];
 ```
 
+## Input
+
+**If you already use Eloquent, you probably don't need this.**
+
+Hive provides an easy way to transform and map the input, so that you get the consistent data to work upon.
+
+Suppose you want to map the input data into something meaningful like this:
+
+```php
+$input = array(
+	'name' => 'John Doe',
+	'age' => 24, // note that this is integer,
+	'gender' => null // user doesn't want to tell, hence mapped to null
+);
+```
+
+To accomplish this, you need to create a trait, say `UserProperties`, which uses `Owlgrin\Hive\Input\Mapper` like this:
+
+```php
+<?php
+
+trait UserProperties {
+	use Owlgrin\Hive\Input\Mapper;
+
+	protected $defaultProperties = array(
+		'name' => 'string|null',
+		'age' => 'int|0',
+		'gender' => 'string|null'
+	);
+}
+```
+
+Now, use this trait in your controllers.
+
+```php
+
+// UserController.php
+class UserController extends Controller {
+	use UserProperties;
+
+	public function store()
+	{
+		$input => $this->getInput(); // this will get you the properly mapped input
+	}
+}
+```
+
+#### Properties
+
+You need to define the properties in an array where the key is the name of the property and the value is a string in the following format: `{type}|{default}`. The property will be typecasted into the defined type and is absent, will be replaced by the default value defined.
+
+All the properties must be defined in the tair properties with following format: ${specifier}Properties. By default, Mapper looks for the 'defaultProperties', but you can look for different properties using `$this->getInput('updation')`, which will look for `$updationProperties` on the trait.
+
+#### Defaults
+
+You can define any default and they all will be typecasted into the specified type of the property. This gives you the consistent data throughout.
+
+There are a few special default values, however.
+
+**null**: This value will set the value as `null` no matter what the type is.
+
+**unset**: This will remove the propert from the input if it is an falsey value.
+
+#### Callbacks
+
+There might be needs when you need to perform some actions after getting the data mapped. To do so, you simple need to create a method in the trait or the class using the trait in the following format:
+
+```php
+protected function {specifier}Callback($original, &$mapped)
+{
+
+}
+```
+
+The callback will receive two arguments, one is the original input that the request got and another is the reference to the mapped input. You can change the mapped input however you wish as it is passed as reference.
+
 ## Responses
 
 We need to create meaningful responses and we provide you with a trait that makes it super simple to do. In your controller, you can use the trait with the following statement:
