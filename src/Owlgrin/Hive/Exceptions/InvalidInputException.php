@@ -1,15 +1,19 @@
-<?php namespace Owlgrin\Hive\Exceptions;
+appe<?php namespace Owlgrin\Hive\Exceptions;
 
 use Illuminate\Support\MessageBag;
 
 class InvalidInputException extends Exception {
 
+	const MESSAGE = 'responses.messages.invalid_input';
+
+	const CODE = 400;
+
 	/**
 	 * Constructor
-	 * @param Illuminate\Support\MessageBag $messageBag
+	 * @param mixed $messages
 	 */
-	public function __construct(MessageBag $messageBag)
+	public function __construct($messages = self::MESSAGE, $replacers = array())
 	{
-		parent::__construct($messageBag->first(), 400);
+		parent::__construct($messages, $replacers);
 	}
 }
