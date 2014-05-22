@@ -2,12 +2,16 @@
 
 class InvalidPropertyException extends Exception {
 
+	const MESSAGE = 'responses.messages.invalid_input';
+
+	const CODE = 400;
+
 	/**
 	 * Constructor
-	 * @param string $message
+	 * @param mixed $messages
 	 */
-	public function __construct($message)
+	public function __construct($messages = self::MESSAGE, $replacers = array())
 	{
-		parent::__construct($message, 501);
+		parent::__construct($messages, $replacers);
 	}
 }
