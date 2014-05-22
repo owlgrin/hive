@@ -2,7 +2,7 @@
 
 class InvalidPropertyException extends Exception {
 
-	const MESSAGE = 'responses.messages.invalid_input';
+	const MESSAGE = 'hive::responses.messages.invalid_input';
 
 	const CODE = 400;
 

@@ -1,10 +1,8 @@
-appe<?php namespace Owlgrin\Hive\Exceptions;
+<?php namespace Owlgrin\Hive\Exceptions;
 
-use Illuminate\Support\MessageBag;
+class BadRequestException extends Exception {
 
-class InvalidInputException extends Exception {
-
-	const MESSAGE = 'hive::responses.messages.invalid_input';
+	const MESSAGE = 'hive::responses.messages.bad_request';
 
 	const CODE = 400;
 
