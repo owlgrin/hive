@@ -21,7 +21,7 @@ trait Mapper {
 	 * @param  string $when
 	 * @return array
 	 */
-	protected function getInput($when = 'default')
+	public function getInput($when = 'default')
 	{
 		$properties = $this->getProperties($when);
 
