@@ -225,6 +225,20 @@ class UserController extends Controller {
 }
 ```
 
+You can also use this by creating a class instead of a trait, like so:
+
+```php
+<?php
+
+class UserMapper {
+	use Owlgrin\Hive\Input\Mapper;
+
+	// properties here
+}
+```
+
+Classes can be extended and also injected. Hence they are more handy sometimes.
+
 #### Properties
 
 You need to define the properties in an array where the key is the name of the property and the value is a string in the following format: `{type}|{default}`. The property will be typecasted into the defined type and is absent, will be replaced by the default value defined.
@@ -264,6 +278,10 @@ And then you can create responses such easily:
 
 `return $this->respondWithData($data);`
 
+Or for the responses without content (HTTP Code: 204), you can use this method:
+
+`return $this->respondNoContent();`
+
 You even get the following methods to send back error messages, with proper HTTP status, a custom code and a custom type.
 
 ```php
@@ -293,7 +311,18 @@ If you extend your controllers from the `Dingo\Api\Routing\Controller`, you can 
 
 ## Exceptions
 
-Hive comes with custom exceptions (only one as of now), to make them easier to handle. The `Owlgrin\Hive\Exceptions\InvalidInputException` is a helpful exception to throw as it takes care of parsing the messages from validator and preparing the response.
+Hive comes with custom exceptions, to make them easier to handle. These are the followin custom exceptions that you can use:
+
+```php
+Owlgrin\Hive\Exceptions\BadRequestException;
+Owlgrin\Hive\Exceptions\UnauthorizedException;
+Owlgrin\Hive\Exceptions\ForbiddenException;
+Owlgrin\Hive\Exceptions\NotFoundException;
+Owlgrin\Hive\Exceptions\InvalidInputException;
+Owlgrin\Hive\Exceptions\InternalException;
+```
+
+Each of these extend an abstract class `Owlgrin\Hive\Exceptions\Exception`, which allows us parse the messages from validator or the language file keys and prepare the response.
 
 You can use it like following:
 
@@ -310,6 +339,10 @@ catch(Owlgrin\Hive\Exceptions\InvalidInputException $e)
 	return $this->respondInvalidInput($e->getMessage(), $e->getCode());
 }
 ```
+
+As a bonus, `Owlgrin\Hive\HiveServiceProvider` already registers various exception handlers for your app, so that you can focus on important work rather than catching exceptions. Hive automatically, catches and prepares the required response.
+
+Try throwing an exception from your routes file. ;)
 
 ***
 
