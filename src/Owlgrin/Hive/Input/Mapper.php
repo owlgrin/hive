@@ -38,7 +38,7 @@ trait Mapper {
 			// unset it and continue on other properties
 			if(empty($value) and $default === 'unset')
 			{
-				array_forget($mapped[$property]);
+				unset($mapped[$property]);
 				continue;
 			}
 
