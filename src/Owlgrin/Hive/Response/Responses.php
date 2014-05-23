@@ -6,34 +6,6 @@ use Illuminate\Support\Facades\Lang;
 trait Responses {
 	protected $httpStatus = 200;
 
-	protected $responseTypes = [
-		'bad_request'    => 'bad_request',
-		'unauthorized'   => 'unauthorized',
-		'forbidden'      => 'forbidden',
-		'not_found'      => 'not_found',
-		'invalid_input'  => 'invalid_input',
-		'internal_error' => 'internal_error'
-	];
-
-	protected $responseCodes = [
-		'bad_request'    => 400,
-		'unauthorized'   => 401,
-		'forbidden'      => 403,
-		'not_found'      => 404,
-		'invalid_input'  => 400,
-		'internal_error' => 500
-	];
-
-	protected $responseMessages = [
-		'bad_request'    => 'responses.message.bad_request',
-		'unauthorized'   => 'responses.message.unauthorized',
-		'forbidden'      => 'responses.message.forbidden',
-		'not_found'      => 'responses.message.not_found',
-		'invalid_input'  => 'responses.message.invalid_input',
-		'internal_error' => 'responses.message.internal_error'
-	];
-
-
 	public static $TYPE_BAD_REQUEST = 'bad_request';
 	public static $TYPE_UNAUTHORIZED = 'unauthorized';
 	public static $TYPE_FORBIDDEN = 'forbidden';
@@ -64,6 +36,11 @@ trait Responses {
 	protected function getHttpStatus()
 	{
 		return $this->httpStatus;
+	}
+
+	protected function respondNoContent()
+	{
+		return $this->setHttpStatus(204)->respondString('');
 	}
 
 	protected function respondWithData(array $data)
@@ -159,5 +136,10 @@ trait Responses {
 	private function respondArray(array $data, array $headers = [])
 	{
 		return Response::make($data, $this->httpStatus, $headers);
+	}
+
+	private function respondString($content, array $headers = [])
+	{
+		return Response::make($content, $this->httpStatus, $headers);
 	}
 }
