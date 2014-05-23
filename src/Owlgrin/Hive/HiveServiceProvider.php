@@ -1,8 +1,11 @@
 <?php namespace Owlgrin\Hive;
 
 use Illuminate\Support\ServiceProvider;
+use Owlgrin\Hive\Response\Responses;
 
 class HiveServiceProvider extends ServiceProvider {
+
+	use Responses;
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -30,7 +33,7 @@ class HiveServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		
+		$this->registerExceptions();
 	}
 
 	/**
@@ -41,6 +44,46 @@ class HiveServiceProvider extends ServiceProvider {
 	public function provides()
 	{
 		return array();
+	}
+
+	protected function registerExceptions()
+	{
+		// Most general exception. Often thrown when something bad goes
+		$this->app->error(function(\Exception $e)
+		{
+			return $this->respondInternalError();
+		});
+
+		// The base exception for Hive. General but manually thrown, hence Bad Request Response
+		$this->app->error(function(Exceptions\Exception $e)
+		{
+			return $this->respondBadRequest($e->getMessage(), $e->getCode());
+		});
+
+		$this->app->error(function(Exceptions\BadRequestException $e)
+		{
+			return $this->respondBadRequest($e->getMessage(), $e->getCode());
+		});
+
+		$this->app->error(function(Exceptions\UnauthorizedException $e)
+		{
+			return $this->respondUnauthorized($e->getMessage(), $e->getCode());
+		});
+
+		$this->app->error(function(Exceptions\ForbiddenException $e)
+		{
+			return $this->respondForbidden($e->getMessage(), $e->getCode());
+		});
+
+		$this->app->error(function(Exceptions\NotFoundException $e)
+		{
+			return $this->respondNotFound($e->getMessage(), $e->getCode());
+		});
+
+		$this->app->error(function(Exceptions\InvalidInputException $e)
+		{
+			return $this->respondInvalidInput($e->getMessage(), $e->getCode());
+		});
 	}
 
 }
