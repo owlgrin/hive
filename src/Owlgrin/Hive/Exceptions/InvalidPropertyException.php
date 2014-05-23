@@ -2,16 +2,23 @@
 
 class InvalidPropertyException extends Exception {
 
-	const MESSAGE = 'hive::responses.messages.invalid_input';
+	/**
+	 * Message
+	 */
+	const MESSAGE = 'hive::responses.message.invalid_input';
 
+	/**
+	 * Code
+	 */
 	const CODE = 400;
 
 	/**
 	 * Constructor
 	 * @param mixed $messages
+	 * @param array $replacers
 	 */
 	public function __construct($messages = self::MESSAGE, $replacers = array())
 	{
-		parent::__construct($messages, $replacers);
+		parent::__construct($messages, $replacers, self::CODE);
 	}
 }

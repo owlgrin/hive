@@ -2,16 +2,23 @@
 
 class BadRequestException extends Exception {
 
-	const MESSAGE = 'hive::responses.messages.bad_request';
+	/**
+	 * Message
+	 */
+	const MESSAGE = 'hive::responses.message.bad_request';
 
+	/**
+	 * Code
+	 */
 	const CODE = 400;
 
 	/**
 	 * Constructor
 	 * @param mixed $messages
+	 * @param array $replacers
 	 */
 	public function __construct($messages = self::MESSAGE, $replacers = array())
 	{
-		parent::__construct($messages, $replacers);
+		parent::__construct($messages, $replacers, self::CODE);
 	}
 }
