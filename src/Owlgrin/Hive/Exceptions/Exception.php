@@ -5,24 +5,41 @@ use Illuminate\Support\Facades\Lang;
 
 abstract class Exception extends BaseException {
 
+	/**
+	 * Default message
+	 */
 	const MESSAGE = 'hive::responses.message.bad_request';
 
+	/**
+	 * Default code
+	 */
 	const CODE = 400;
 
-	public function __construct($message = null, $replacers = array())
+	/**
+	 * Constructor
+	 * @param MessageBag|string|null $messages
+	 * @param array  $replacers
+	 * @param number $code
+	 */
+	public function __construct($messages = null, $replacers = array(), $code = self::CODE)
 	{
-		$message = Lang::get($this->getMessage($messages));
+		$message = Lang::get($this->fetchMessage($messages));
 
 		$message = $this->replacePlaceholders($message, $replacers);
 
-		parent::__construct($message, self::CODE);
+		parent::__construct($message, $code);
 	}
 
-	protected function getMessage($messages)
+	/**
+	 * Method to fetch message depending upon it's type
+	 * @param  MessageBag|string $messages
+	 * @return string
+	 */
+	protected function fetchMessage($messages)
 	{
 		if($messages instanceof MessageBag)
 		{
-			return $messageBag->first();
+			return $messages->first();
 		}
 		else if(is_string($messages))
 		{
@@ -34,7 +51,13 @@ abstract class Exception extends BaseException {
 		}
 	}
 
-	protected function replacePlaceholders($message, $replacers)
+	/**
+	 * Method to replace placeholders, if any
+	 * @param  string $message
+	 * @param  array $replacers
+	 * @return string
+	 */
+	protected function replacePlaceholders($message, array $replacers)
 	{
 		foreach($replacers as $placeholder => $replacer)
 		{
