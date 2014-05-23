@@ -54,10 +54,10 @@ class HiveServiceProvider extends ServiceProvider {
 			return $this->respondInternalError();
 		});
 
-		// The base exception for Hive. General but manually thrown, hence Bad Request Response
-		$this->app->error(function(Exceptions\Exception $e)
+		// The base exception for Hive. General and custom
+		$this->app->error(function(Exceptions\InternalException $e)
 		{
-			return $this->respondBadRequest($e->getMessage(), $e->getCode());
+			return $this->respondInternalError($e->getMessage(), $e->getCode());
 		});
 
 		$this->app->error(function(Exceptions\BadRequestException $e)
