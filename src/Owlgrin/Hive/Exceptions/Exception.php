@@ -1,6 +1,7 @@
 <?php namespace Owlgrin\Hive\Exceptions;
 
 use Exception as BaseException;
+use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Lang;
 
 abstract class Exception extends BaseException {
