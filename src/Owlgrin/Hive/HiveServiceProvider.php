@@ -34,6 +34,7 @@ class HiveServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		$this->registerExceptions();
+		$this->registerCommands();
 	}
 
 	/**
@@ -84,6 +85,11 @@ class HiveServiceProvider extends ServiceProvider {
 		{
 			return $this->respondInvalidInput($e->getMessage(), $e->getCode());
 		});
+	}
+
+	protected function registerCommands()
+	{
+		$this->app->bind('Owlgrin\Hive\Command\Bus\BusInterface', 'Owlgrin\Hive\Command\Bus\SimpleBus');
 	}
 
 }
