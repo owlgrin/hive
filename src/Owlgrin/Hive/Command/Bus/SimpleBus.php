@@ -5,14 +5,27 @@ use App\Command\PreparableInterface;
 
 class SimpleBus implements BusInterface {
 
+	/**
+	 * Instance to hold app
+	 * @var Application
+	 */
 	protected $app;
 
+	/**
+	 * Constructor
+	 * @param Application $app 
+	 */
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
 	}
 
-	public function getHandler(Command $command)
+	/**
+	 * Method to get handler for the command
+	 * @param  $command
+	 * @return Handler
+	 */
+	public function getHandler($command)
 	{
 		// It converts App\Commands\Some\Path\To\SomeCommand into App\Handlers\Some\Path\To\SomeHandler;
 		$handler = str_replace('Command', 'Handler', get_class($command));
@@ -20,7 +33,12 @@ class SimpleBus implements BusInterface {
 		return $this->app->make($handler);
 	}
 
-	public function execute(Command $command)
+	/**
+	 * Method to execute the command
+	 * @param  $command 
+	 * @return mixed           
+	 */
+	public function execute($command)
 	{
 		if($command instanceof PreparableInterface)
 		{
