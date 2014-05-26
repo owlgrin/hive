@@ -1,6 +1,6 @@
 <?php namespace Owlgrin\Hive\Command\Bus;
 
-interface CommandBusInterface {
+interface BusInterface {
 	/**
 	 * Get the instance of the command
 	 * @param  Command $command

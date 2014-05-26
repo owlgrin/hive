@@ -1,4 +1,4 @@
-<?php namespace App\Command;
+<?php namespace Owlgrin\Hive\Command;
 
 use Illuminate\Support\Facades\App;
 

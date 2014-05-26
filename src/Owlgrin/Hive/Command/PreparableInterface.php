@@ -1,4 +1,4 @@
-<?php Owlgrin\Hive\Command;
+<?php namespace Owlgrin\Hive\Command;
 
 interface PreparableInterface {
 	/**

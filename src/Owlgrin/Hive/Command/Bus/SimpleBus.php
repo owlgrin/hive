@@ -1,7 +1,7 @@
 <?php namespace Owlgrin\Hive\Command\Bus;
 
 use Illuminate\Foundation\Application;
-use App\Command\PreparableInterface;
+use Owlgrin\Hive\Command\PreparableInterface;
 
 class SimpleBus implements BusInterface {
 
