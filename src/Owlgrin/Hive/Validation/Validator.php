@@ -122,4 +122,46 @@ class Validator extends IlluminateValidator {
 
 		return str_replace(':attribute', $attribute, $message);
 	}
+
+	/**
+	 * Method to validate call_another rule
+	 * @param  string $attribute
+	 * @param  mixed $value
+	 * @param  array $parameters
+	 * @return boolean
+	 */
+	protected function validateCallAnother($attribute, $value, array $parameters)
+	{
+		list($class, $when) = explode('@', $parameters[0]);
+
+		$validator = $this->container->make($class);
+
+		if(! $validator->when($when)->isValid($value))
+		{
+			// Merging with existing errors
+			$this->addCallAnotherErrors($attribute, $validator->getErrors());
+		}
+
+		// Always returning true, because the errors are already handled above
+		return true;
+	}
+
+	/**
+	 * Method to loop through errors and merge them into parent attribute
+	 * @param string     $attribute
+	 * @param integer     $index
+	 * @param MessageBag $errors
+	 */
+	private function addCallAnotherErrors($attribute, MessageBag $errors)
+	{
+		foreach($errors->getMessages() as $nestedAttribute => $messages)
+		{
+			foreach($messages as $message)
+			{
+				$specifier = $this->makeSpecifier('call_another');
+				$specifier = str_replace(':attribute', $attribute, $specifier);
+				$this->messages->add($attribute, "$specifier $message");
+			}
+		}
+	}
 }

@@ -12,6 +12,7 @@ return [
 	|
 	*/
 	'specifiers' => [
-		'call_each' => ':position item in :parent_attribute'
+		'call_each' => ':position item in :parent_attribute',
+		'call_another' => 'In :attribute'
 	],
 ];
