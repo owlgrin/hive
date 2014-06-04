@@ -11,10 +11,10 @@ abstract class Command {
 	protected $data;
 
 	/**
-	 * Instance to hold auth manager
-	 * @var AuthManager
+	 * Instance to hold the instance of application
+	 * @var Illuminate\Foundation\Application
 	 */
-	protected $auth;
+	protected $app;
 
 	/**
 	 * Constructor
@@ -23,7 +23,7 @@ abstract class Command {
 	public function __construct(array $data)
 	{
 		$this->data = $data;
-		$this->auth = App::make('Illuminate\Auth\AuthManager');
+		$this->app = App::make('Illuminate\Foundation\Application');
 	}
 
 	/**
