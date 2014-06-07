@@ -1,5 +1,6 @@
 <?php namespace Owlgrin\Hive\Response;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Lang;
 
@@ -135,11 +136,13 @@ trait Responses {
 
 	private function respondArray(array $data, array $headers = [])
 	{
-		return Response::make($data, $this->httpStatus, $headers);
+		$default = Config::get('hive::response.headers');
+		return Response::make($data, $this->httpStatus, array_merge($default, $headers));
 	}
 
 	private function respondString($content, array $headers = [])
 	{
-		return Response::make($content, $this->httpStatus, $headers);
+		$default = Config::get('hive::response.headers');
+		return Response::make($content, $this->httpStatus, array_merge($default, $headers));
 	}
 }
