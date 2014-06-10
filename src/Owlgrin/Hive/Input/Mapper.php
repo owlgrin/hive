@@ -25,32 +25,36 @@ trait Mapper {
 	{
 		$properties = $this->getProperties($when);
 
-		$mapped = Input::only(array_keys($properties));
-
-		foreach($mapped as $property => $value)
+		// only if properties exists
+		if(is_null($properties))
 		{
-			list($type, $default) = $this->parseProperty(array_get($properties, $property));
+			$mapped = Input::only(array_keys($properties));
 
-			// Now, we will first trim the value to remove any leading or trailing whitespace
-			$value = is_array($value) ? $value : trim($value);
-
-			// If the default was to unset the property itself, we will simply
-			// unset it and continue on other properties
-			if(empty($value) and $default === 'unset')
+			foreach($mapped as $property => $value)
 			{
-				unset($mapped[$property]);
-				continue;
+				list($type, $default) = $this->parseProperty(array_get($properties, $property));
+
+				// Now, we will first trim the value to remove any leading or trailing whitespace
+				$value = is_array($value) ? $value : trim($value);
+
+				// If the default was to unset the property itself, we will simply
+				// unset it and continue on other properties
+				if(empty($value) and $default === 'unset')
+				{
+					unset($mapped[$property]);
+					continue;
+				}
+
+				// We will set the proper types on the value
+				settype($value, $type);
+
+				// If default was specified to be null, then we will set its type to null,
+				// otherwise, we will simply typecast it to property's type
+				settype($default, $default === 'null' ? 'null' : $type);
+
+				// Setting the value back in the input
+				$mapped[$property] = empty($value) ? $default : $value;
 			}
-
-			// We will set the proper types on the value
-			settype($value, $type);
-
-			// If default was specified to be null, then we will set its type to null,
-			// otherwise, we will simply typecast it to property's type
-			settype($default, $default === 'null' ? 'null' : $type);
-
-			// Setting the value back in the input
-			$mapped[$property] = empty($value) ? $default : $value;
 		}
 
 		// Run callback, if any
@@ -71,7 +75,7 @@ trait Mapper {
 	{
 		if( ! isset($this->{$when . 'Properties'}))
 		{
-			throw new InvalidPropertyException("No '\${$when}Properties' defined to fetch from.");
+			return null;
 		}
 
 		return $this->{$when . 'Properties'};
