@@ -26,7 +26,7 @@ trait Mapper {
 		$properties = $this->getProperties($when);
 
 		// only if properties exists
-		if(is_null($properties))
+		if( ! is_null($properties))
 		{
 			$mapped = Input::only(array_keys($properties));
 
