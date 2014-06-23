@@ -164,16 +164,4 @@ class Validator extends IlluminateValidator {
 			}
 		}
 	}
-
-	/**
-	 * Method to validate timezone rule
-	 * @param  string $attribute
-	 * @param  mixed $value
-	 * @param  array $parameters
-	 * @return boolean
-	 */
-	protected function validateTimezone($attribute, $value, array $parameters)
-	{
-		return in_array($value, timezone_identifiers_list());
-	}
 }
