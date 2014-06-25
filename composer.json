@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": ">=4.1.*",
+        "illuminate/support": "4.2.*",
         "dingo/api": "0.5.*",
         "lucadegasperi/oauth2-server-laravel": "1.0.*"
     },
