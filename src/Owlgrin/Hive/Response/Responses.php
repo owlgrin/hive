@@ -28,27 +28,55 @@ trait Responses {
 	public static $MSG_INVALID_INPUT = 'responses.message.invalid_input';
 	public static $MSG_INTERNAL_ERROR = 'responses.message.internal_error';
 
+	/**
+	 * Sets the HTTP Status Code
+	 *
+	 * @param number $status
+	 */
 	protected function setHttpStatus($status)
 	{
 		$this->httpStatus = $status;
 		return $this;
 	}
 
+	/**
+	 * Returns the HTTP Status Code
+	 *
+	 * @return number
+	 */
 	protected function getHttpStatus()
 	{
 		return $this->httpStatus;
 	}
 
+	/**
+	 * Responds with NO CONTENT
+	 *
+	 * @return Response
+	 */
 	protected function respondNoContent()
 	{
 		return $this->setHttpStatus(204)->respondString('');
 	}
 
+	/**
+	 * Responds with data
+	 *
+	 * @param  array  $data
+	 * @return Response
+	 */
 	protected function respondWithData(array $data)
 	{
 		return $this->setHttpStatus(200)->respondArray($data);
 	}
 
+	/**
+	 * Responds with BAD REQUEST error
+	 *
+	 * @param  string $message
+	 * @param  number $code
+	 * @return Response
+	 */
 	protected function respondBadRequest($message = null, $code = null)
 	{
 		return $this->setHttpStatus(400)
@@ -59,6 +87,13 @@ trait Responses {
 			);
 	}
 
+	/**
+	 * Responds with UNAUTHORIZED error
+	 *
+	 * @param  string $message
+	 * @param  number $code
+	 * @return Response
+	 */
 	protected function respondUnauthorized($message = null, $code = null)
 	{
 		return $this->setHttpStatus(401)
@@ -69,6 +104,13 @@ trait Responses {
 			);
 	}
 
+	/**
+	 * Responds with FORBIDDEN error
+	 *
+	 * @param  string $message
+	 * @param  number $code
+	 * @return Response
+	 */
 	protected function respondForbidden($message = null, $code = null)
 	{
 		return $this->setHttpStatus(403)
@@ -79,6 +121,13 @@ trait Responses {
 			);
 	}
 
+	/**
+	 * Responds with NOT FOUND error
+	 *
+	 * @param  string $message
+	 * @param  number $code
+	 * @return Response
+	 */
 	protected function respondNotFound($message = null, $code = null)
 	{
 		return $this->setHttpStatus(404)
@@ -89,6 +138,13 @@ trait Responses {
 			);
 	}
 
+	/**
+	 * Responds with INVALID INPUT error
+	 *
+	 * @param  string $message
+	 * @param  number $code
+	 * @return Response
+	 */
 	protected function respondInvalidInput($message = null, $code = null)
 	{
 		return $this->setHttpStatus(400)
@@ -99,6 +155,13 @@ trait Responses {
 			);
 	}
 
+	/**
+	 * Responds with INTERNAL ERROR error
+	 *
+	 * @param  string $message
+	 * @param  number $code
+	 * @return Response
+	 */
 	protected function respondInternalError($message = null, $code = null)
 	{
 		return $this->setHttpStatus(500)
@@ -109,6 +172,14 @@ trait Responses {
 			);
 	}
 
+	/**
+	 * Responds with error
+	 *
+	 * @param  string $message
+	 * @param  number $code
+	 * @param  string $type
+	 * @return Response
+	 */
 	protected function respondError($message = null, $code = null, $type = null)
 	{
 		// If no message was passed, we will default it to the bad request message
@@ -134,12 +205,26 @@ trait Responses {
 		]);
 	}
 
+	/**
+	 * Responds with an array
+	 *
+	 * @param  array  $data
+	 * @param  array $headers
+	 * @return Response
+	 */
 	private function respondArray(array $data, array $headers = [])
 	{
 		$default = Config::get('hive::response.headers');
 		return Response::make($data, $this->httpStatus, array_merge($default, $headers));
 	}
 
+	/**
+	 * Responds with a string
+	 *
+	 * @param  string $content
+	 * @param  array $headers
+	 * @return Response
+	 */
 	private function respondString($content, array $headers = [])
 	{
 		$default = Config::get('hive::response.headers');
