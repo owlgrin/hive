@@ -60,6 +60,16 @@ trait Responses {
 	}
 
 	/**
+	 * Responds with NOT MODIFIED
+	 *
+	 * @return Response
+	 */
+	protected function respondNotModified()
+	{
+		return $this->setHttpStatus(304)->respondString('');
+	}
+
+	/**
 	 * Responds with data
 	 *
 	 * @param  array  $data
