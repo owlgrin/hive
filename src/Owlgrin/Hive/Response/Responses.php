@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Lang;
 
+/**
+ * The resuable Responses trait
+ */
 trait Responses {
 	protected $httpStatus = 200;
 
