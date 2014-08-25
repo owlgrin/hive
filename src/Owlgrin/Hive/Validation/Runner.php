@@ -4,6 +4,9 @@ use Illuminate\Validation\Factory as IlluminateValidator;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\MessageBag;
 
+/**
+ * The class which is responsible for running the validations
+ */
 abstract class Runner {
 
 	/**
