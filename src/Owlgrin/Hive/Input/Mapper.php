@@ -94,6 +94,7 @@ trait Mapper {
 		// for that particular type
 		if( ! isset($parsedProperty[1]))
 		{
+			// but even if there's no default found, we will error out
 			if( ! isset($this->propertyDefaults[$parsedProperty[0]]))
 			{
 				throw new InvalidPropertyException("Property: [$parsedProperty[0]] not supported.");
