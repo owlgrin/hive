@@ -164,22 +164,4 @@ class Validator extends IlluminateValidator {
 			}
 		}
 	}
-
-	/**
-	 * Replace all place-holders for the required_if rule.
-	 *
-	 * @param  string  $message
-	 * @param  string  $attribute
-	 * @param  string  $rule
-	 * @param  array   $parameters
-	 * @return string
-	 */
-	protected function replaceRequiredIf($message, $attribute, $rule, $parameters)
-	{
-		$parameters[1] = $this->getDisplayableValue($parameters[0], array_get($this->data, $parameters[0]));
-
-		$parameters[0] = $this->getAttribute($parameters[0]);
-
-		return str_replace(array(':other', ':value'), $parameters, $message);
-	}
 }
