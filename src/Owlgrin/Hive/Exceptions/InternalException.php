@@ -17,8 +17,8 @@ class InternalException extends Exception {
 	 * @param mixed $messages
 	 * @param array $replacers
 	 */
-	public function __construct($messages = self::MESSAGE, $replacers = array())
+	public function __construct($messages = static::MESSAGE, $replacers = array())
 	{
-		parent::__construct($messages, $replacers, self::CODE);
+		parent::__construct($messages, $replacers, static::CODE);
 	}
 }

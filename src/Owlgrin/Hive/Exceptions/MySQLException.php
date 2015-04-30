@@ -17,12 +17,12 @@ class MySQlException extends Exception {
 	 * @param mixed $messages
 	 * @param array $replacers
 	 */
-	public function __construct($exception, $messages = self::MESSAGE, $replacers = array())
+	public function __construct($exception, $messages = static::MESSAGE, $replacers = array())
 	{
 		switch($exception->getCode()) {
-			case '23000': throw new InvalidInputException($messages, $replacers, self::CODE);
+			case '23000': throw new InvalidInputException($messages, $replacers, static::CODE);
 			default: throw new InternalException;
 		}
-		parent::__construct($messages, $replacers, self::CODE);
+		parent::__construct($messages, $replacers, static::CODE);
 	}
 }
