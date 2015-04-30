@@ -1,6 +1,6 @@
 <?php namespace Owlgrin\Hive\Exceptions;
 
-class MySQlException extends Exception {
+class MySQLException extends Exception {
 
 	/**
 	 * Message
