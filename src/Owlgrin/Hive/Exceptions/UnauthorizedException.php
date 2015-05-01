@@ -17,8 +17,10 @@ class UnauthorizedException extends Exception {
 	 * @param mixed $messages
 	 * @param array $replacers
 	 */
-	public function __construct($messages = static::MESSAGE, $replacers = array())
+	public function __construct($messages = null, $replacers = array())
 	{
+		$messages = is_null($messages) ? null : static::MESSAGE;
+
 		parent::__construct($messages, $replacers, static::CODE);
 	}
 }
