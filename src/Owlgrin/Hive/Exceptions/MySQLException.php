@@ -17,12 +17,15 @@ class MySQLException extends Exception {
 	 * @param mixed $messages
 	 * @param array $replacers
 	 */
-	public function __construct($exception, $messages = static::MESSAGE, $replacers = array())
+	public function __construct($exception, $messages = null, $replacers = array())
 	{
+		$messages = is_null($messages) ? null : static::MESSAGE;
+
 		switch($exception->getCode()) {
 			case '23000': throw new InvalidInputException($messages, $replacers, static::CODE);
 			default: throw new InternalException;
 		}
+
 		parent::__construct($messages, $replacers, static::CODE);
 	}
 }
