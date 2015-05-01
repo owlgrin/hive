@@ -19,7 +19,7 @@ class MySQLException extends Exception {
 	 */
 	public function __construct($exception, $messages = null, $replacers = array())
 	{
-		$messages = is_null($messages) ? null : static::MESSAGE;
+		$messages = is_null($messages) ? static::MESSAGE : $messages;
 
 		switch($exception->getCode()) {
 			case '23000': throw new InvalidInputException($messages, $replacers, static::CODE);

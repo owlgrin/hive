@@ -21,7 +21,7 @@ class InvalidInputException extends Exception {
 	 */
 	public function __construct($messages = null, $replacers = array())
 	{
-		$messages = is_null($messages) ? null : static::MESSAGE;
+		$messages = is_null($messages) ? static::MESSAGE : $messages;
 
 		parent::__construct($messages, $replacers, static::CODE);
 	}
