@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Route as Router;
+use Illuminate\Routing\Route;
 
 /**
  * The resuable Responses trait
@@ -228,7 +230,11 @@ trait Responses {
 	private function respondArray(array $data, array $headers = [])
 	{
 		$default = Config::get('hive::response.headers');
-		return Response::make($data, $this->httpStatus, array_merge($default, $headers));
+
+		$response = Response::make($data, $this->httpStatus, array_merge($default, $headers));
+		$response = $this->callAfterFilters($response);
+		
+		return $response;
 	}
 
 	/**
@@ -241,6 +247,34 @@ trait Responses {
 	private function respondString($content, array $headers = [])
 	{
 		$default = Config::get('hive::response.headers');
-		return Response::make($content, $this->httpStatus, array_merge($default, $headers));
+		
+		$response = Response::make($content, $this->httpStatus, array_merge($default, $headers));
+		$response = $this->callAfterFilters($response);
+
+		return $response;
+	}
+
+	/**
+	 * Calls 'after' filters, if any supplied
+	 *
+	 * @param  Illuminate\Http\Response $response
+	 * @return Illuminate\Http\Response
+	 */
+	private function callAfterFilters($response)
+	{
+		// Only if there exists a route AND after filters, we will apply the after
+		// filter. Why? Because if there's no matching route, then, the after
+		// filter will squak out as we'll be missing the 'route' parameter
+		// that it needs.
+		if(($route = Router::getCurrentRoute()) && ! is_null($after = Config::get('hive::response.after')))
+		{
+			$afterFilters = Route::parseFilters($after);
+			foreach($afterFilters as $filter => $parameters)
+			{
+				Router::callRouteFilter($filter, $parameters, $route, Router::getCurrentRequest(), $response);
+			}
+		}
+
+		return $response;
 	}
 }

@@ -9,5 +9,10 @@ return array(
 		'headers' => array(
 			// 'Access-Control-Allow-Origin' => 'http://example.com'
 		),
+
+		/**
+		 * The 'after' filters, if any to be run when creating responses
+		 */
+		'after' => null
 	),
 );
