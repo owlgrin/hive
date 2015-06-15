@@ -10,6 +10,8 @@ The package includes the following other packages to get started with the develo
 
 Dingo API already depends upon the [Fractal](https://github.com/thephpleague/fractal), so transformations come out of the box.
 
+Hive works with Laravel 4.2 as well as Laravel 5.
+
 ## Installation
 
 You will need to require it in your `composer.json` file.
