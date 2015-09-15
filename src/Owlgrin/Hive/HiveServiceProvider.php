@@ -89,7 +89,7 @@ class HiveServiceProvider extends ServiceProvider {
 
 	protected function registerCommands()
 	{
-		$this->app->bind('Owlgrin\Hive\Command\Bus\BusInterface', 'Owlgrin\Hive\Command\Bus\SimpleBus');
+		$this->app->bind('Owlgrin\Hive\Command\Bus\BusInterface', 'Owlgrin\Hive\Command\Bus\TransactionBus');
 	}
 
 }
