@@ -1,6 +1,8 @@
 <?php namespace Owlgrin\Hive;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+
 use Owlgrin\Hive\Response\Responses;
 
 class HiveServiceProvider extends ServiceProvider {
@@ -89,7 +91,12 @@ class HiveServiceProvider extends ServiceProvider {
 
 	protected function registerCommands()
 	{
-		$this->app->bind('Owlgrin\Hive\Command\Bus\BusInterface', 'Owlgrin\Hive\Command\Bus\TransactionBus');
+		$this->app->bind('Owlgrin\Hive\Command\Bus\BusInterface', function($app)
+		{
+			return Config::get('hive::default') == 'transaction'
+					? $this->app->make('Owlgrin\Hive\Command\Bus\TransactionBus')
+					: $this->app->make('Owlgrin\Hive\Command\Bus\SimpleBus');
+		});
 	}
 
 }
