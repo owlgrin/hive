@@ -93,9 +93,7 @@ class HiveServiceProvider extends ServiceProvider {
 	{
 		$this->app->bind('Owlgrin\Hive\Command\Bus\BusInterface', function($app)
 		{
-			return Config::get('hive::bus') == 'transaction_bus'
-					? $this->app->make('Owlgrin\Hive\Command\Bus\TransactionBus')
-					: $this->app->make('Owlgrin\Hive\Command\Bus\SimpleBus');
+			return $this->app->make(Config::get('hive::bus'));
 		});
 	}
 
