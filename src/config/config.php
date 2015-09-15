@@ -2,6 +2,8 @@
 
 return array(
 
+	'bus' => 'transaction_bus',
+
 	'response' => array(
 		/**
 		 * The default headers that are needed to be sent with every response
