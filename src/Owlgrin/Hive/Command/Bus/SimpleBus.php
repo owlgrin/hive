@@ -13,7 +13,7 @@ class SimpleBus implements BusInterface {
 
 	/**
 	 * Constructor
-	 * @param Application $app 
+	 * @param Application $app
 	 */
 	public function __construct(Application $app)
 	{
@@ -27,7 +27,7 @@ class SimpleBus implements BusInterface {
 	 */
 	public function getHandler($command)
 	{
-		// It converts App\Commands\Some\Path\To\SomeCommand into App\Handlers\Some\Path\To\SomeHandler;
+		// It converts App\Core\Commands\Some\Path\To\SomeCommand into App\Core\Handlers\Some\Path\To\SomeHandler;
 		$handler = str_replace('Command', 'Handler', get_class($command));
 
 		return $this->app->make($handler);
@@ -35,8 +35,8 @@ class SimpleBus implements BusInterface {
 
 	/**
 	 * Method to execute the command
-	 * @param  $command 
-	 * @return mixed           
+	 * @param  $command
+	 * @return mixed
 	 */
 	public function execute($command)
 	{

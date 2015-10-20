@@ -2,7 +2,7 @@
 
 return array(
 
-	'bus' => 'Owlgrin\Hive\Command\Bus\TransactionBus',
+	'bus' => 'Owlgrin\Hive\Command\Bus\SimpleBus',
 
 	'response' => array(
 		/**
