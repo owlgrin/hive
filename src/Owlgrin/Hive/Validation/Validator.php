@@ -177,31 +177,21 @@ class Validator extends IlluminateValidator {
 	{
 		list($class, $when) = explode('@', $parameters[0]);
 
-		// fetch the entities
-		// there could be multiple entities 
-		// which is in format {entity1} {entity2}
-		// fetching text between 2 parenthesis
-		preg_match_all('/{(.*?)}/', $when, $replacers);
+		// Fetch the variables from the rule definition
+		preg_match_all('/{(.*?)}/', $when, $variables);
 
-		//fetching the array of entities which would be replaced afterwords
-		$entities = $replacers[1];
-		
-		//validating if entities exist in the data
-		foreach($entities as $entity) 
+		// Variables WITHOUT the curly braces are in 1st index
+		foreach($variables[1] as $key => $variable) 
 		{
-			$entityValidation = LaravelValidator::make($this->data, [$entity => 'required']);
+			if( ! $this->validateRequired($variable, $this->data[$variable]))
+			{
+				$this->addCallAnotherErrors($attribute, $this->messages());
 
-			if($entityValidation->fails())
-			{
-				// Merging with existing errors			
-				$this->addCallAnotherErrors($attribute, $entityValidation->messages());
-				return true;
+				return false;
 			}
-			else
-			{
-				//making validate function
-				$when = str_replace('{'. $entity .'}', $this->data[$entity], $when);				
-			}
+
+			// Variables WITH the curly braces are in 0th index
+			$when = str_replace($variables[0][$key], $this->data[$variable], $when);
 		}
 
 		$validator = $this->container->make($class);

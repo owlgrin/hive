@@ -54,6 +54,7 @@ class HiveServiceProvider extends ServiceProvider {
 		// Most general exception. Often thrown when something bad goes
 		$this->app->error(function(\Exception $e)
 		{
+			dd($e);
 			return $this->respondInternalError();
 		});
 
