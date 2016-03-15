@@ -181,8 +181,10 @@ class Validator extends IlluminateValidator {
 		//fetch the entity
 		//entity is in this format {entity}
 		//therefore extracting entity
-		list($format, $partialFunction) = explode('}', $when);
-		$entity = str_replace('{', '', $format);
+		// list($format, $partialFunction) = explode('}', $when);
+		// fetching text between 2 parenthesis
+		preg_match('/{(.*?)}/', $when, $format);
+		$entity = str_replace('{', '', $format[1]);
 
 		$validator = $this->container->make($class);
 
