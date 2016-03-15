@@ -2,6 +2,7 @@
 
 use Illuminate\Validation\Validator as IlluminateValidator;
 use Illuminate\Support\MessageBag;
+use Validator as MasterValidator;
 
 class Validator extends IlluminateValidator {
 
@@ -174,29 +175,38 @@ class Validator extends IlluminateValidator {
 	 */
 	protected function validateCallAnotherWith($attribute, $value, array $parameters)
 	{
-
-		// dd($this->data, $attribute, $value, $parameters);
 		list($class, $when) = explode('@', $parameters[0]);
 
-		//fetch the entity
-		//entity is in this format {entity}
-		//therefore extracting entity
-		// list($format, $partialFunction) = explode('}', $when);
+		// fetch the entities
+		// there could be multiple entities 
+		// which is in format {entity1} {entity2}
 		// fetching text between 2 parenthesis
-		preg_match('/{(.*?)}/', $when, $format);
-		$entity = str_replace('{', '', $format[1]);
+		preg_match_all('/{(.*?)}/', $when, $replacers);
+
+		//fetching the array of entities which would be replaced afterwords
+		$entities = $replacers[1];
+		
+		//validating if entities exist in the data
+		foreach($entities as $entity) 
+		{
+			$entityValidation = MasterValidator::make($this->data, [$entity => 'required']);
+
+			if($entityValidation->fails())
+			{
+				// Merging with existing errors			
+				$this->addCallAnotherErrors($attribute, $entityValidation->messages());
+				return true;
+			}
+			else
+			{
+				//making validate function
+				$when = str_replace('{'. $entity .'}', $this->data[$entity], $when);				
+			}
+		}
 
 		$validator = $this->container->make($class);
 
-		if(! isset($this->data[$entity]))
-		{
-			throw new Exceptions\InvalidInputException('hive::exceptions.general.required', array('attribute' => $entity));
-		}
-
-		//making validate function
-		$validateFunction = str_replace('{'. $entity .'}', $this->data[$entity], $when);
-
-		if(! $validator->when($validateFunction)->isValid($value))
+		if(! $validator->when($when)->isValid($value))
 		{
 			// Merging with existing errors
 			$this->addCallAnotherErrors($attribute, $validator->getErrors());
