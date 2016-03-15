@@ -2,7 +2,7 @@
 
 use Illuminate\Validation\Validator as IlluminateValidator;
 use Illuminate\Support\MessageBag;
-use Validator as MasterValidator;
+use Validator as LaravelValidator;
 
 class Validator extends IlluminateValidator {
 
@@ -189,7 +189,7 @@ class Validator extends IlluminateValidator {
 		//validating if entities exist in the data
 		foreach($entities as $entity) 
 		{
-			$entityValidation = MasterValidator::make($this->data, [$entity => 'required']);
+			$entityValidation = LaravelValidator::make($this->data, [$entity => 'required']);
 
 			if($entityValidation->fails())
 			{
