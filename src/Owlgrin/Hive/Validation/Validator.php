@@ -174,15 +174,11 @@ class Validator extends IlluminateValidator {
 	 */
 	protected function validateCallAnotherWith($attribute, $value, array $parameters)
 	{
-
-		// dd($this->data, $attribute, $value, $parameters);
 		list($class, $when) = explode('@', $parameters[0]);
 
 		//fetch the entity
 		//entity is in this format {entity}
-		//therefore extracting entity
-		// list($format, $partialFunction) = explode('}', $when);
-		// fetching text between 2 parenthesis
+		// fetching entity between 2 parenthesis
 		preg_match('/{(.*?)}/', $when, $format);
 		$entity = str_replace('{', '', $format[1]);
 
