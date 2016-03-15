@@ -196,7 +196,7 @@ class Validator extends IlluminateValidator {
 
 		$validator = $this->container->make($class);
 
-		if(! $validator->when($when)->isValid($value))
+		if(! $validator->when($when)->isValid($this->data))
 		{
 			// Merging with existing errors
 			$this->addCallAnotherErrors($attribute, $validator->getErrors());
