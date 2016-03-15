@@ -164,4 +164,43 @@ class Validator extends IlluminateValidator {
 			}
 		}
 	}
+
+	/**
+	 * Method to validate call_another_with rule
+	 * @param  string $attribute
+	 * @param  mixed $value
+	 * @param  array $parameters
+	 * @return boolean
+	 */
+	protected function validateCallAnotherWith($attribute, $value, array $parameters)
+	{
+
+		// dd($this->data, $attribute, $value, $parameters);
+		list($class, $when) = explode('@', $parameters[0]);
+
+		//fetch the entity
+		//entity is in this format {entity}
+		//therefore extracting entity
+		list($format, $partialFunction) = explode('}', $when);
+		$entity = str_replace('{', '', $format);
+
+		$validator = $this->container->make($class);
+
+		if(! isset($this->data[$entity]))
+		{
+			throw new Exceptions\InvalidInputException('hive::exceptions.general.required', array('attribute' => $entity));
+		}
+
+		//making validate function
+		$validateFunction = str_replace('{'. $entity .'}', $this->data[$entity], $when);
+
+		if(! $validator->when($validateFunction)->isValid($value))
+		{
+			// Merging with existing errors
+			$this->addCallAnotherErrors($attribute, $validator->getErrors());
+		}
+
+		// Always returning true, because the errors are already handled above
+		return true;
+	}
 }
