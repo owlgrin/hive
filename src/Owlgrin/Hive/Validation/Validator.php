@@ -2,6 +2,7 @@
 
 use Illuminate\Validation\Validator as IlluminateValidator;
 use Illuminate\Support\MessageBag;
+use Validator as LaravelValidator;
 
 class Validator extends IlluminateValidator {
 
@@ -163,5 +164,45 @@ class Validator extends IlluminateValidator {
 				$this->messages->add($attribute, "$specifier $message");
 			}
 		}
+	}
+
+	/**
+	 * Method to validate call_another_with rule
+	 * @param  string $attribute
+	 * @param  mixed $value
+	 * @param  array $parameters
+	 * @return boolean
+	 */
+	protected function validateCallAnotherWith($attribute, $value, array $parameters)
+	{
+		list($class, $when) = explode('@', $parameters[0]);
+
+		// Fetch the variables from the rule definition
+		preg_match_all('/{(.*?)}/', $when, $variables);
+
+		// Variables WITHOUT the curly braces are in 1st index
+		foreach($variables[1] as $key => $variable) 
+		{
+			if( ! $this->validateRequired($variable, $this->data[$variable]))
+			{
+				$this->addCallAnotherErrors($attribute, $this->messages());
+
+				return false;
+			}
+
+			// Variables WITH the curly braces are in 0th index
+			$when = str_replace($variables[0][$key], $this->data[$variable], $when);
+		}
+
+		$validator = $this->container->make($class);
+
+		if(! $validator->when($when)->isValid($this->data))
+		{
+			// Merging with existing errors
+			$this->addCallAnotherErrors($attribute, $validator->getErrors());
+		}
+
+		// Always returning true, because the errors are already handled above
+		return true;
 	}
 }
