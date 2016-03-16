@@ -31,4 +31,17 @@ if ( ! function_exists('number_ordinal'))
 		// Otherwise, return with 'th'
 		return $number . 'th';
 	}
+
+
+	function input_only($array, $keys)
+	{
+		$results = [];
+
+		foreach ($keys as $key)
+		{
+			array_set($results, $key, array_get($array, $key));
+		}
+
+		return $results;
+	}
 }

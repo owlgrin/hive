@@ -21,14 +21,16 @@ trait Mapper {
 	 * @param  string $when
 	 * @return array
 	 */
-	public function getInput($when = 'default')
+	public function getInput($when = 'default', $input = null)
 	{
 		$properties = $this->getProperties($when);
-
+		if(is_null($input)) $input = Input::all();
+		
 		// only if properties exists
 		if( ! is_null($properties))
 		{
-			$mapped = Input::only(array_keys($properties));
+
+			$mapped = input_only($input, array_keys($properties));
 
 			foreach($mapped as $property => $value)
 			{
@@ -60,7 +62,7 @@ trait Mapper {
 		// Run callback, if any
 		if(method_exists($this, $when . 'Callback'))
 		{
-			call_user_func_array(array($this, $when . 'Callback'), array(Input::all(), &$mapped));
+			call_user_func_array(array($this, $when . 'Callback'), array($input, &$mapped));
 		}
 
 		return $mapped;
